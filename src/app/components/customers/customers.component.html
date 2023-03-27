@@ -1,0 +1,17 @@
+<h4 class="text-center text-white bg-secondary">Müşteriler</h4>
+<table class="table">
+    <thead>
+        <tr>
+        <th> Id</th>
+        <th>Kullanıcı Id</th>
+        <th>Şirket Adı</th>
+      
+       </tr>
+    </thead>
+    <tr *ngFor="let customers of customer">
+        <td>{{customers.id}}</td>     
+        <td>{{customers.userId}}</td>
+        <td>{{customers.companyName}}</td>
+      
+    </tr>
+</table>
