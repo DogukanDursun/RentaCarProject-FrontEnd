@@ -9,6 +9,8 @@ import { Color } from 'src/app/models/color';
 import { ColorService } from 'src/app/services/color.service';
 import { BrandService } from 'src/app/services/brand.service';
 import { CarimageService } from 'src/app/services/carimage.service';
+import { ToastrService } from 'ngx-toastr';
+import { CartService } from 'src/app/services/cart.service';
 @Component({
   selector: 'app-car',
   templateUrl: './car.component.html',
@@ -29,6 +31,8 @@ export class CarComponent implements OnInit{
   constructor(private carService:CarService,private activatedRoute:ActivatedRoute,
     private carImageService:CarimageService,
     private brandService:BrandService,
+    private cartService:CartService,
+    private toastrService:ToastrService,
     private colorService:ColorService,
  ){}
 
@@ -112,8 +116,12 @@ export class CarComponent implements OnInit{
     this.currentCar = null;
 
   }
-
-  
+  addToCart(car:Car){
+      
+    this.toastrService.success("Sepete eklendi",car.description)
+    this.cartService.addToCart(car);
+  }
 }
+  
 
 

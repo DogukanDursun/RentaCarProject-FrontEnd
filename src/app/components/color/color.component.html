@@ -1,9 +1,13 @@
-
-  <h4 class="text-center text-white bg-primary">Renkler</h4>
-  <ul class="list-group">
+<div class="dropdown">
+  <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+ Renkler
+  </button>
+  
+  <ul class="dropdown-menu">
     
-    <li (click)="setCurrentColor (color)" routerLink = "/cars/color/{{color.colorId}}"
+    <li (click)="setCurrentColor (color) "routerLink = "/cars/color/{{color.colorId}}"
     *ngFor="let color of colors" 
     [class]="getCurrentColorClass(color)">{{color.colorName}}</li>
   </ul>
+</div>
  <h5 *ngIf="currentColor"> {{currentColor.colorName}} Seçtiniz </h5>

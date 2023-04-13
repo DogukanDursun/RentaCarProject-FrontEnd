@@ -1,13 +1,14 @@
-<div class="row">
-
- 
-
+<div *ngIf="dataLoaded==false" class="spinner-border text-secondary" role="status">
+  <span class="visually-hidden">Loading...</span>
 </div>
-
+<div class="mb-3">
+  <label for="filterText" class="form-label">Ürün Ara</label>
+  <input type="text"[(ngModel)]="filterText" class="form-control" id="filterText" placeholder="Arama İfadesi Giriniz">
+</div>
+<div *ngIf ="filterText.length>2"class="alert alert-success"> {{filterText}} aradınız</div>
 <div class="row">
-  <div class="col-sm-12 col-md-4 col-lg-4 mb-4 ml-1" *ngFor="let car of cars ">
-    <div class="car-body" (click)="setCurrentCar(car)" 
-    routerLink="/cars/car/{{car.Id }}" class="col-md-4">
+  <div class="col-sm-12 col-md-4 col-lg-4 mb-4 ml-1" *ngFor= "let car of cars|filterPipe:filterText ">
+   
       <div class="card" style="width: 18rem">
         <img [src]="getCarImage(car)" img class="img-rounded " alt="Cinque Terre" />
 
@@ -30,11 +31,10 @@
           </li>
         </ul>
        
-      <button   (click)="setCurrentCar (car)" routerLink = "/cars/car/{{car.Id}}" type="button" class="btn btn-primary btn-lg">Detay</button>
+        <td><button (click)= "addToCart(car)" type="button" class="btn btn-outline-success">Sepete Ekle</button></td>
       
       </div>
 
       <br />
     </div>
   </div>
-</div>

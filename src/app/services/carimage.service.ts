@@ -29,7 +29,7 @@ export class CarimageService {
     return this.httpClient.get<ListResponseModel<CarImage>>(newPath)
   }
   getImagePath(carImage: string):Observable<ListResponseModel<CarImage>>{
-    let newPath = this.apiURL+"uploads/Images/="+carImage
+    let newPath = this.apiURL+"api/uploads/Images/="+carImage
     return this.httpClient.get<ListResponseModel<CarImage>>(newPath)
   }
 

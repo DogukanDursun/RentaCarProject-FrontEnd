@@ -6,7 +6,7 @@ export interface Car{
     model:string;
     modelYear:number;
    
-    id:number,
+   
     description: string,
     colorName: string,
          

@@ -1,15 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CarDetail } from 'src/app/models/carDetail';
-import { CarImage } from 'src/app/models/carImage';
-import { Color } from 'src/app/models/color';
-import { BrandService } from 'src/app/services/brand.service';
-import { CardetailService } from 'src/app/services/cardetail.service';
-import { ColorService } from 'src/app/services/color.service';
-import { CarimageService } from 'src/app/services/carimage.service';
+import { ToastrService } from 'ngx-toastr';
 import { Car } from 'src/app/models/car';
+import { CarImage } from 'src/app/models/carImage';
 import { Rental } from 'src/app/models/rental';
+import { CarimageService } from 'src/app/services/carimage.service';
 import { CarService } from 'src/app/services/car.service';
+import { CartService } from 'src/app/services/cart.service';
+import { RentalService } from 'src/app/services/rental.service';
 
 @Component({
   selector: 'app-cardetail',
@@ -17,64 +15,76 @@ import { CarService } from 'src/app/services/car.service';
   styleUrls: ['./cardetail.component.css']
 })
 export class CardetailComponent implements OnInit{
-  carDetails:Car[]=[]
-
-  colors : Color[]=[];
-
-  imageUrl = "https://localhost:44326/uploads/Images/"
-  carImages: CarImage[]=[];
-  currentCar:Car
-  rental:Rental[]=[];
+  carsdetail:Car[]=[];
+   imageUrl = "https://localhost:44326/uploads/Images/"
+   carImages:CarImage[] = [];
+   currentCar:Car
+   rental:Rental[]=[];
    currentRental:Rental
    currentImage: CarImage;
    dataLoaded = false ;
- 
+   
 
-  constructor(private carDetailService: CardetailService,private activatedRoute:ActivatedRoute,
+  
+   constructor(private carService: CarService,
+    private activatedToute:ActivatedRoute,
     private carImageService:CarimageService,
-    private brandService:BrandService,
-    private colorService:ColorService,
-    private carService: CarService){}
+    private cartService:CartService,
+    private toastrService:ToastrService,
+    private renalService:RentalService
+   ){}
 
-  ngOnInit():void{ this.activatedRoute.params.subscribe(params => {
-    this.getCarById(params["carId"] )
+    ngOnInit(): void {
+      this.activatedToute.params.subscribe(params => {
+        this.getCarById(params["Id"])
+        
+          this.getImageByCarId(params["Id"])
+        
+        
+      })
+    }
+    getImageByCarId(carId:number){
+      this.carImageService.getByCarId(carId).subscribe(response => {
+        this.carImages = response.data;
+        this.dataLoaded=true;
+
+      })
+    }
+
+    getImagePath(carImage: CarImage) {
+      let path = this.imageUrl + carImage.imagePath;
+      return path;
+    }
 
    
-    this.getImageByCarId(params["carId"])
-   })
+    getCarById(id:number) {
+      this.carService.getCarById(id).subscribe(response => {
+      this.carsdetail = response.data;
+      this.dataLoaded = true;
+      })
     
-
-  }
-  getImageByCarId(carId:number){
-    this.carImageService.getByCarId(carId).subscribe(response => {
-      this.carImages = response.data;
-      this.dataLoaded=true;
-
-    })
-  }
-
-  getImagePath(carImage: CarImage) {
-    let path = this.imageUrl + carImage.imagePath;
-    return path;
-  }
-
+    } 
+    
+    setCurrentRental(rental:Rental){
+      this.currentRental=rental;
+    }
  
-  getCarById(id:number) {
-    this.carService.getCarById(id).subscribe(response => {
-    this.carDetails = response.data;
-    this.dataLoaded = true;
-    })
+
   
-  } 
+
+  addToCart(car:Car){ 
+    
+      this.toastrService.success("Sepete eklendi",car.model)
+      this.cartService.addToCart(car);
   
-  setCurrentRental(rental:Rental){
-    this.currentRental=rental;
+
+
   }
-
-sertCurrentCar(car:Car){
-  this.currentCar=car;
-}
-
-          
+  sertCurrentCar(car:Car){
+    this.currentCar=car;
+  }
+  }
+    
  
-}
+
+  
